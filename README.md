@@ -12,7 +12,8 @@ By pressing the left key, the number of vertices will decrese by 1 (to a minimum
 
 There  is a GUI to show you the circle and the points and the vertices
 
-![image](https://github.com/TomerSchDev/PI-Day-Calculation-/assets/40770296/419c2c81-0602-49bb-b374-5252c892b354)
+![image](https://github.com/TomerSchDev/PI-Day-Calculation-/assets/40770296/1f16ff1d-5ceb-40a2-9d04-b87adc3d0aa1)
+
 
 have fun!
 
