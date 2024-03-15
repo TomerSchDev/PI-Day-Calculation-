@@ -1,3 +1,5 @@
+import numpy
+
 from point import *
 import numpy as np
 
@@ -44,23 +46,24 @@ TOTAL_ANGLES = 360.0
 keepGameRunning = True
 num_edges = 4
 font = pygame.font.SysFont("comicsansms", 35)
-key_down = False
 inside_points, outside_points = calculate_points(num_edges)
 while keepGameRunning:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             keepGameRunning = False
-        elif event.type == pygame.KEYDOWN and not key_down:
-            key_down = True
-            if event.key == pygame.K_RIGHT:
+        elif event.type == pygame.KEYDOWN:
+            key = event.key
+            if key == pygame.K_RIGHT:
                 num_edges += 1
-            elif event.key == pygame.K_LEFT:
+            elif key == pygame.K_LEFT:
                 num_edges = max(3, num_edges - 1)
-            elif event.key == pygame.K_SPACE:
-                debug = True
+            elif key == pygame.K_UP:
+                num_edges += 10
+            elif key == pygame.K_DOWN:
+                num_edges = max(3, num_edges - 10)
+            elif key == pygame.K_z:
+                num_edges = 4
             inside_points, outside_points = calculate_points(num_edges)
-        elif event.type == pygame.KEYUP:
-            key_down = False
 
     window.fill("white")
     pygame.draw.circle(window, (0, 0, 0), CENTER.to_tuple(), RADIOS, 10)
@@ -68,29 +71,31 @@ while keepGameRunning:
     outside_sum = 0
     for i, c in enumerate(outside_points):
         new_point = transformToScreen(c)
-        o_p=outside_points[i - 1]
+        o_p = outside_points[i - 1]
         old_p = transformToScreen(o_p)
-        pygame.draw.circle(window, (150, 150, 0), new_point.to_tuple(), 10)
-        pygame.draw.line(window, (255, 0, 0), new_point.to_tuple(), old_p.to_tuple(), 5)
+        # pygame.draw.circle(window, (150, 150, 0), new_point.to_tuple(), 10)
+        pygame.draw.line(window, (255, 0, 0), new_point.to_tuple(), old_p.to_tuple(), 10)
         outside_sum += o_p.distance(c)
     for i, p in enumerate(inside_points):
         new_point = transformToScreen(p)
-        pygame.draw.circle(window, (255, 0, 0), new_point.to_tuple(), 10)
+        # pygame.draw.circle(window, (255, 0, 0), new_point.to_tuple(), 10)
         point_before = inside_points[i - 1]
         point_before_screen = transformToScreen(point_before)
-        pygame.draw.line(window, (0, 0, 255), point_before_screen.to_tuple(), new_point.to_tuple(), 5)
+        pygame.draw.line(window, (0, 0, 255), point_before_screen.to_tuple(), new_point.to_tuple(), 10)
         dis_sum += point_before.distance(p)
-    inside_pi=(dis_sum / (2 * RADIOS))
-    outside_pi=(outside_sum / (2 * RADIOS))
-    esteem_pi= (inside_pi + outside_pi) / 2
+    inside_pi = (dis_sum / (2 * RADIOS))
+    outside_pi = (outside_sum / (2 * RADIOS))
+    esteem_pi = (inside_pi + outside_pi) / 2
     inside_text = font.render(f"Pi is more them = {inside_pi}", True, (200, 0, 0))
     outside_text = font.render(f"Pi is less then = {outside_pi}", True, (200, 0, 0))
     calculate_text = font.render(f"Pi is about ... = {esteem_pi}", True, (200, 0, 0))
     edges_text = font.render(f"The number of vertices : {num_edges}", True, (200, 0, 0))
+    PI_text = font.render(f"π = : {numpy.pi}", True, (200, 0, 0))
 
     window.blit(outside_text, (10, 100))
     window.blit(calculate_text, (10, outside_text.get_height() + 100))
     window.blit(inside_text, (10, calculate_text.get_height() + outside_text.get_height() + 100))
     window.blit(edges_text, (WIDTH - edges_text.get_width() - 100, 100))
+    window.blit(PI_text, (WIDTH - edges_text.get_width() - 100, 100 + edges_text.get_height() + 50))
 
     pygame.display.flip()
