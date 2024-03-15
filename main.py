@@ -88,9 +88,9 @@ while keepGameRunning:
     calculate_text = font.render(f"Pi is about ... = {esteem_pi}", True, (200, 0, 0))
     edges_text = font.render(f"The number of vertices : {num_edges}", True, (200, 0, 0))
 
-    window.blit(outside_text, (0, 100))
-    window.blit(calculate_text, (0, outside_text.get_height() + 100))
-    window.blit(inside_text, (0, calculate_text.get_height() + outside_text.get_height() + 100))
+    window.blit(outside_text, (10, 100))
+    window.blit(calculate_text, (10, outside_text.get_height() + 100))
+    window.blit(inside_text, (10, calculate_text.get_height() + outside_text.get_height() + 100))
     window.blit(edges_text, (WIDTH - edges_text.get_width() - 100, 100))
 
     pygame.display.flip()
